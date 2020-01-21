@@ -1,26 +1,27 @@
 var fs = require('fs');
 
-function createData(email, password, password_confirmation) {
-  if (!email && !password && !password_confirmation) {
+function createUser(id, name, email, password) {
+  if (!name && !email && !password) {
     console.log("Data isn't valid!");
     return;
   }
 
-  if (password !== password_confirmation) {
-    console.log("Password and its confirmation doesn't match!");
-    return;
-  }
-
-  let data = {
+  let user = [{
+    id: id,
+    name: name,
     email: email,
     password: password,
-    password_confirmation: password_confirmation
-  }
+  }]
 
-  let files = fs.readdirSync('./data');
+  var newuser = require(`./data/users.json`);
+
+  user.push({
+    id, name, email, password
+  });
+
   fs.writeFileSync(
-    `./data/${files.length + 1}.json`,
-    JSON.stringify(data)
+    `./data/users.json`,
+    JSON.stringify(user, null, 2)
   ); 
 
   console.log('Data created!')
@@ -28,5 +29,5 @@ function createData(email, password, password_confirmation) {
 
 module.exports = {
   user: createUser,
-  post: createPost
+  //post: createPost
 };
