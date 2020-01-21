@@ -1,23 +1,19 @@
 var fs = require('fs');
 
-function createUser(id, name, email, password) {
+function createUser(name, email, password) {
   if (!name && !email && !password) {
     console.log("Data isn't valid!");
     return;
   }
 
-  let user = [{
-    id: id,
+  var user = require('./data/users.json');
+
+  user.push({
+    id: user.length + 1,
     name: name,
     email: email,
     password: password,
-  }]
-
-  var newuser = require(`./data/users.json`);
-
-  user.push({
-    id, name, email, password
-  });
+  })
 
   fs.writeFileSync(
     `./data/users.json`,
@@ -27,7 +23,29 @@ function createUser(id, name, email, password) {
   console.log('Data created!')
 }
 
+function createPost(title, body) {
+  if (!title && !body) {
+    console.log("Data isn't valid!");
+    return;
+  }
+
+  var post = require('./data/posts.json');
+
+  post.push({
+    id: post.length + 1,
+    title: title,
+    body: body,
+  })
+
+  fs.writeFileSync(
+    `./data/posts.json`,
+    JSON.stringify(post, null, 2)
+  ); 
+
+  console.log('Data created!')
+}
+
 module.exports = {
   user: createUser,
-  //post: createPost
+  post: createPost
 };
