@@ -15,7 +15,11 @@ switch(args[0]) {
 
     console.log(read.user(id));
     break;
-
+  case 'read_post':
+    var idd = args[1];
+  
+    console.log(read.post(idd));
+    break;
   case 'update_user':
 
   case 'create_post':

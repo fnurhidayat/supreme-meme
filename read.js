@@ -7,7 +7,17 @@ function readUser(ID){
     } 
     return users;
 }
+
+function readPost(ID){
+    var posts = require('./data/posts.json');
+    for (let i=0; i< posts.length;i++){
+        if (ID == posts[i]['id']){ 
+            posts = posts[i]
+        }
+    } 
+    return posts;
+}
 module.exports = {
     user: readUser,
-//    post: readPost
+    post: readPost
 };
