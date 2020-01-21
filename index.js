@@ -1,4 +1,5 @@
 var create = require('./create.js');
+var read = require('./read.js')
 var args = process.argv.slice(2);
 
 switch(args[0]) {
@@ -10,9 +11,15 @@ switch(args[0]) {
     create.user(name, email, password);
     break;
   case 'read_user':
+    var id = args[1];
 
+    console.log(read.user(id));
     break;
-
+  case 'read_post':
+    var idd = args[1];
+  
+    console.log(read.post(idd));
+    break;
   case 'update_user':
 
   case 'create_post':
