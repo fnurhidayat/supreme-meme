@@ -16,8 +16,9 @@ if (args.length < 2) {
   process.exit();
 }
 
-var email = args[0];
-var password = args[1];
-var password_confirmation = args[2];
+var id = [0];
+var email = args[1];
+var password = args[2];
+var password_confirmation = args[3];
 
 create(email, password, password_confirmation);
