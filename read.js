@@ -8,7 +8,6 @@ function readUser(ID){
     if (ID.length >= 2) {
         console.log("Kepanjangan woi!")
     }
-    
 
     var users = require('./data/users.json');
     for (let i=0; i< users.length;i++){
@@ -19,8 +18,6 @@ function readUser(ID){
         }
     } 
     return users;
-
-
 }
 
 function readPost(ID){
