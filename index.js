@@ -1,24 +1,26 @@
-/*
- * 1. Create function to create data, which require 3 arguments
- * 2. The arguments are:
- *    - Email
- *    - Password
- *    - Password Confirmation
- * 2. In create data, check if password and password_confirmation is equal
- * 3. If so, then create new data in ./data folder
- * 4. If not, just reject.
- * */
-
 var create = require('./create.js');
 var args = process.argv.slice(2);
 
-if (args.length < 2) {
-  process.exit();
+switch(args[0]) {
+  case 'create_user':
+    var name = args[1];
+    var email = args[2];
+    var password = args[3];
+    
+    create.user(name, email, password);
+    break;
+  case 'read_user':
+
+    break;
+
+  case 'update_user':
+
+  case 'create_post':
+    var title = args[1];
+    var body = args[2];
+
+    create.post(title,body);
+    break;
+  default:
+    console.log('Unknown operation!')
 }
-
-var id = [0];
-var email = args[1];
-var password = args[2];
-var password_confirmation = args[3];
-
-create(email, password, password_confirmation);

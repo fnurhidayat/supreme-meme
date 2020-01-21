@@ -1,15 +1,12 @@
 var fs = require('fs');
 
-function createUser(email, password, password_confirmation) {
-  if (!email && !password && !password_confirmation) {
+function createUser(name, email, password) {
+  if (!name && !email && !password) {
     console.log("Data isn't valid!");
     return;
   }
 
-  if (password !== password_confirmation) {
-    console.log("Password and its confirmation doesn't match!");
-    return;
-  }
+  var user = require('./data/users.json');
 
   let user = [{
     id: id,
@@ -18,18 +15,45 @@ function createUser(email, password, password_confirmation) {
     password_confirmation: password_confirmation
   }]
 
-  URLSearchParams.push({
-    id, name, email, password
+  user.push({
+    id: user.length + 1,
+    name: name,
+    email: email,
+    password: password,
   })
 
-  let files = fs.readdirSync('./data');
   fs.writeFileSync(
-    `./data/${files.length + 1}.json`,
+    `./data/users.json`,
     JSON.stringify(user, null, 2)
   ); 
 
   console.log('Data created!')
 }
 
+function createPost(title, body) {
+  if (!title && !body) {
+    console.log("Data isn't valid!");
+    return;
+  }
 
-module.exports = createUser;
+  var post = require('./data/posts.json');
+
+  post.push({
+    id: post.length + 1,
+    title: title,
+    body: body,
+  })
+
+  fs.writeFileSync(
+    `./data/posts.json`,
+    JSON.stringify(post, null, 2)
+  ); 
+
+  console.log('Data created!')
+}
+
+
+module.exports = {
+  user: createUser,
+  post: createPost
+};
