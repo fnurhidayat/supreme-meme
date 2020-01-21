@@ -1,12 +1,26 @@
 function readUser(ID){
+    // validator kalau ID nya bukan number
+
+    if (ID != Number) {
+        console.log("masukin angka woi!")
+    }
+
+    if (ID.length >= 2) {
+        console.log("Kepanjangan woi!")
+    }
+    
+
     var users = require('./data/users.json');
     for (let i=0; i< users.length;i++){
-        if (ID == users[i]['id']){ 
+        console.log(i)
+        if (ID == users[i].id){ 
             users = users[i];
             delete users['password'];
         }
     } 
     return users;
+
+
 }
 
 function readPost(ID){

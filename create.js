@@ -8,6 +8,13 @@ function createUser(name, email, password) {
 
   var user = require('./data/users.json');
 
+  let user = [{
+    id: id,
+    email: email,
+    password: password,
+    password_confirmation: password_confirmation
+  }]
+
   user.push({
     id: user.length + 1,
     name: name,
@@ -44,6 +51,7 @@ function createPost(title, body) {
 
   console.log('Data created!')
 }
+
 
 module.exports = {
   user: createUser,
