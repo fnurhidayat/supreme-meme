@@ -1,19 +1,18 @@
 const ActiveRecord = require(`./ActiveRecord.js`)
 
-class User extends ActiveRecord {
+class Post extends ActiveRecord {
     constructor(data){
         super({
-            table_name: 'users',
+            table_name: 'posts',
             data: {
-                name: data.name,
-                email: data.email,
-                password: data.password
+                title: data.title,
+                body: data.body
             }
         })
     }
     static find(ID){
         return new Promise((resolve, reject) => {
-        let temp = require(`./data/users.json`)
+        let temp = require(`./data/posts.json`)
         for (let i=0; i < temp.length; i++){
             if (ID == temp[i].id){
                 resolve (temp[i]);
@@ -24,7 +23,7 @@ class User extends ActiveRecord {
     }
     static Delete(ID){
         return new Promise((resolve, reject) => {
-        let temp = require(`./data/users.json`)
+        let temp = require(`./data/posts.json`)
         for (let i=0; i < temp.length;i++){
             if (ID == temp[i].id){
                 temp.splice(i,1)
@@ -35,4 +34,5 @@ class User extends ActiveRecord {
     })
     }
 }
-module.exports = User;
+
+module.exports = Post;
