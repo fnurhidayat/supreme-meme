@@ -1,16 +1,30 @@
+var create = require('./create.js');
+var read = require('./read.js');
+
 const User = require('./user.js')
 const Post = require('./post.js')
 var args = process.argv.slice(2);
 
 switch(args[0]) {
   case 'create_user':
-    var name = args[1];
-    var email = args[2];
-    var password = args[3];
+    var currentUser = require('./data/users.json');
+    var newUser = new User ({
+      id: currentUser.length + 1,
+      name: args[1],
+      email: args[2],
+      password: args[3],
+    })
 
-    create.user(name, email, password);
+    newUser.create();
     break;
  
+  case 'read_user':
+    var id = args[1]
+    User.find(id)
+    .then(data => {console.log(data)})
+    .catch(err => {console.log(err)})
+    break;
+  
   case 'read_user':
     var id = args[1]
     User.find(id)
@@ -62,53 +76,3 @@ switch(args[0]) {
   default:
     console.log('Unknown operation!')
 }
-
-
-
-// let isBanana = function(data) {
-//   return new Promise(function(resolve, reject) {
-//     if (data === 'Banana') {
-//       resolve({
-//           input: data,
-//           isBanana: true
-//       })
-//       return resolve('Yes')
-//     } else {
-//       reject('No');
-//     }
-//   })
-// }
-
-// isBanana('Bukan Banana')
-// .then(data => {
-//   console.log(data); 
-// })
-//   .catch(err => {
-//     console.error(err);
-//   });
-
-//   console.log('Uy uy')
-
-
-
-  // let isTrue = true;
-  // let promise = new Promise(function(resolve, reject) {
-  //   if (isTrue) {
-  //     resolve('Hello World');
-  //   } else {
-  //     reject('Bye world!');
-  //   }
-  // })
-
-  // async function jalanin() {
-  //   try {
-  //     let result = await promise;
-  //     fs.writeFile('./contoh.txt', 'Hello World', function(err, data) {
-  //       console.log('Data created!')
-  //     })
-  //   } catch(err) {
-  //     console.log(err);
-  //   }
-  // }
-
-  // jalanin();

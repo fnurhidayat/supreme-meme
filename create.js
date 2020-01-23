@@ -1,5 +1,6 @@
 var fs = require('fs');
 
+/*
 function createUser(name, email, password) {
   if (!name && !email && !password) {
     console.log("Data isn't valid!");
@@ -29,6 +30,42 @@ function createUser(name, email, password) {
 
   console.log('Data created!')
 }
+*/
+
+function createUser (data){
+  return new Promise(function(resolve, reject) {
+    if (!data.name || !data.email || !data.password){
+      reject ("Invalid Data")
+    };
+
+    let users = require('./data/users.json') || [];
+    data.id = users.length + 1;
+
+    let {
+      id,
+      name,
+      email,
+      password,
+    } = data;
+
+    users.push({
+      id,
+      name,
+      email,
+      password,
+    });
+
+    fs.writeFileSync(
+      `./data/users.json`,
+      JSON.stringify(users, null, 2)
+    ); 
+
+    resolve({
+      id, name, email
+    });
+  })
+}
+
 
 function createPost(title, body) {
   if (!title && !body) {
@@ -57,3 +94,4 @@ module.exports = {
   user: createUser,
   post: createPost
 };
+
