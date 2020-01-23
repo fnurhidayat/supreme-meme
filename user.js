@@ -34,5 +34,18 @@ class User extends ActiveRecord {
         reject('ID not found');
     })
     }
-}
+    static updateUser (id, object){
+        return new Promise(function(resolve, reject){
+            let users = require('./data/posts.json');
+            const index = users.findIndex(user => user.id == id);
+        if (index < 0) {
+            reject('user not found');
+        }
+        users[index].name = object.name;
+        users[index].email = object.email;
+        fs.writeFileSync(`./data/users.json`, JSON.stringify(users, null, 2))
+            resolve(users, index);
+        })
+    }
+    }
 module.exports = User;
