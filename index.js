@@ -2,6 +2,7 @@ var fs = require ('fs');
 var create = require('./create.js');
 var read = require('./read.js');
 var update = require('./update.js');
+var Delete = require('./delete.js');
 var args = process.argv.slice(2);
 
 switch(args[0]) {
@@ -45,6 +46,20 @@ switch(args[0]) {
     var body = args[2];
 
     create.post(title,body);
+    break;
+
+  case 'delete_user':
+    var id = args[1];
+
+    Delete.user(id);
+    console.log(`User with ID number ${id} has been deleted`);
+    break;
+
+    case 'delete_post':
+    var id = args[1];
+
+    Delete.post(id);
+    console.log(`Post with ID number ${id} has been deleted`);
     break;
   default:
     console.log('Unknown operation!')
