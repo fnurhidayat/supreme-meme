@@ -5,14 +5,12 @@ class User extends ActiveRecord {
         super({
             table_name: 'users',
             data: {
-                id: data.id,
                 name: data.name,
                 email: data.email,
                 password: data.password
             }
         })
     }
-    
     static find(ID){
         return new Promise((resolve, reject) => {
         let temp = require(`./data/users.json`)

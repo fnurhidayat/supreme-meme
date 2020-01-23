@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "id": 1,
+    "name": "tiga",
+    "email": "tiga@email.com",
+    "password": "3"
+  },
+  {
+    "id": 2,
+    "name": "Choi",
+    "email": "ChoiGanteng@email.com",
+    "password": "2"
+  },
+  {
+    "id": 3,
+    "name": "rendra",
+    "email": "bedes@gmail.com",
+    "password": "1"
+  }
+]
+
