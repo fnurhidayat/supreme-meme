@@ -5,7 +5,7 @@ function readUser(ID){
         console.log("masukin angka woi!")
     }
 
-    if (ID.length >= 2) {
+    if (ID.length >= 5) {
         console.log("Kepanjangan woi!")
     }
     
