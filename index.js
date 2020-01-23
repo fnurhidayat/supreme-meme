@@ -1,7 +1,5 @@
-var create = require('./create.js');
-var read = require('./read.js');
-var update = require('./update.js');
-var Delete = require('./delete.js');
+const User = require('./user.js')
+const Post = require('./post.js')
 var args = process.argv.slice(2);
 
 switch(args[0]) {
@@ -9,19 +7,21 @@ switch(args[0]) {
     var name = args[1];
     var email = args[2];
     var password = args[3];
-    
+
     create.user(name, email, password);
     break;
  
   case 'read_user':
-    var id = args[1];
-    console.log(read.user(id));
+    var id = args[1]
+    User.find(id)
+    .then(data => {console.log(data)})
+    .catch(err => {console.log(err)})
     break;
   
   case 'read_post':
     var id = args[1];
   
-    console.log(read.post(id));
+    console.log(Post.find(id));
     break;
     
   case 'update_user':
@@ -48,14 +48,14 @@ switch(args[0]) {
   case 'delete_user':
     var id = args[1];
 
-    Delete.user(id);
+    User.Delete(id);
     console.log(`User with ID number ${id} has been deleted`);
     break;
 
     case 'delete_post':
     var id = args[1];
 
-    Delete.post(id);
+    Post.Delete(id);
     console.log(`Post with ID number ${id} has been deleted`);
     break;
   default:
