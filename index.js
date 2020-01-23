@@ -14,8 +14,10 @@ switch(args[0]) {
     break;
  
   case 'read_user':
-    var id = args[1];
-    console.log(read.user(id));
+    var type = args[1]
+    var id = args[2];
+    User.find(type, id)
+  
     break;
   
   case 'read_post':
