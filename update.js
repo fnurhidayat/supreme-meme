@@ -4,7 +4,8 @@ var fs = require('fs');
 
 //update users
 function updateUser (id, object){
-    const index = users.findIndex(user => user.id == id);
+    return new Promise(function(resolve, reject){
+        const index = users.findIndex(user => user.id == id);
     if (index < 0) {
         reject('user not found');
     }
@@ -12,6 +13,7 @@ function updateUser (id, object){
     users[index].email = object.email;
     fs.writeFileSync(`./data/users.json`, JSON.stringify(users, null, 2))
         resolve(users, index);
+    })
 }
 
 var args = process.argv.slice(2)
@@ -24,7 +26,7 @@ function updatePosts (id, object){
     return new Promise(function(resolve, reject) {
         const index = posts.findIndex(post => post.id == id);
         if (index < 0) {
-            reject('user not found');
+            reject('post not found');
         }
         posts[index].title = object.title;
         posts[index].body = object.body;

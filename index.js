@@ -1,8 +1,5 @@
-var fs = require ('fs');
-var create = require('./create.js');
-var read = require('./read.js');
-var update = require('./update.js');
-var Delete = require('./delete.js');
+const User = require('./user.js')
+const Post = require('./post.js')
 var args = process.argv.slice(2);
 
 switch(args[0]) {
@@ -10,26 +7,27 @@ switch(args[0]) {
     var name = args[1];
     var email = args[2];
     var password = args[3];
-    
+
     create.user(name, email, password);
     break;
  
   case 'read_user':
-    var id = args[1];
-    console.log(read.user(id));
+    var id = args[1]
+    User.find(id)
+    .then(data => {console.log(data)})
+    .catch(err => {console.log(err)})
     break;
   
   case 'read_post':
     var id = args[1];
   
-    console.log(read.post(id));
+    console.log(Post.find(id));
     break;
     
   case 'update_user':
-    let id = args[1];
-    let object = args[2]
-
-    update.updateUser(id,object)
+    var id = args[1];
+    var object = args[2]
+    User.updateUser(id,object)
       .then(data => console.log(data))
       .catch(err => console.log(err))
     break;
@@ -37,9 +35,9 @@ switch(args[0]) {
   case 'update_post':
     var id = args[1];
     var object = args[2]
-    
-    console.log(update.updatePost(id,object));
-    break;
+    Post.updatePosts(id,object)
+      .then(data => console.log(data))
+      .catch(err => console.log(err))
     
   case 'create_post':
     var title = args[1];
@@ -51,14 +49,14 @@ switch(args[0]) {
   case 'delete_user':
     var id = args[1];
 
-    Delete.user(id);
+    User.Delete(id);
     console.log(`User with ID number ${id} has been deleted`);
     break;
 
     case 'delete_post':
     var id = args[1];
 
-    Delete.post(id);
+    Post.Delete(id);
     console.log(`Post with ID number ${id} has been deleted`);
     break;
   default:
@@ -67,19 +65,19 @@ switch(args[0]) {
 
 
 
-let isBanana = function(data) {
-  return new Promise(function(resolve, reject) {
-    if (data === 'Banana') {
-      resolve({
-          input: data,
-          isBanana: true
-      })
-      return resolve('Yes')
-    } else {
-      reject('No');
-    }
-  })
-}
+// let isBanana = function(data) {
+//   return new Promise(function(resolve, reject) {
+//     if (data === 'Banana') {
+//       resolve({
+//           input: data,
+//           isBanana: true
+//       })
+//       return resolve('Yes')
+//     } else {
+//       reject('No');
+//     }
+//   })
+// }
 
 // isBanana('Bukan Banana')
 // .then(data => {
