@@ -5,13 +5,22 @@ class Post extends ActiveRecord {
 
     constructor(data){
         super({
-            table_name: 'posts',
-            data: {
-                title: data.title,
-                body: data.body
-            }
+            title: data.title,
+            body: data.body
         })
     }
+
+    //Method Override
+    save(){
+        return new Promise((resolve, reject) => {
+          if (!this.title || !this.body){
+            reject("There is no title or body on the post");
+          }
+          
+          else {
+            super.save().then(i => resolve(i))}
+        })
+      }
 
     static updatePosts(id, object){
         return new Promise(function(resolve, reject) {
