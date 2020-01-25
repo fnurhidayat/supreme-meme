@@ -1,15 +1,37 @@
 const fs = require('fs');
 class ActiveRecord {
+    static table_name;
+
     constructor(data) {
-        this.table_name = data.table_name;
-        this.data = data.data;
+        for (let i in data) {
+            this[i] = data[i];
+        }
     }
 
-    create() {
-        var currentData = require(`${__dirname}/./data/${this.table_name}.json`) || [];
-        currentData.push(this.data);
-        fs.writeFileSync(`./data/${this.table_name}.json`, JSON.stringify(currentData, null, 2));
-    }
+    save() {
+        return new Promise((resolve, reject) => {
+            let files;
+            fs.readdir(`${__dirname}/../data/`, (err, data) => {
+              files = data;
+      
+              let filename = this.constructor.table_name + '.json';
+      
+              files = files.filter(i => i == filename);
+              if (files.length == 0) {
+                fs.writeFileSync(`${__dirname}/../data/${filename}`, '[]');
+              }
+      
+              let dataFile = require(`${__dirname}/../data/${filename}`);
+              dataFile.push({
+                id: (dataFile.length + 1),
+                ...this
+              });
+      
+              fs.writeFileSync(`${__dirname}/../data/${filename}`, JSON.stringify(dataFile, null, 2)); 
+            }) 
+          })
+        }
+      
 
     static find(ID) {
         return new Promise((resolve, reject) => {

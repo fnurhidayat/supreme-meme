@@ -1,8 +1,7 @@
 [
   {
     "id": 1,
-    "name" : "tes name",
-    "title": "Hello",
-    "body": "World"
+    "title": "World",
+    "body": "Hello"
   }
 ]
