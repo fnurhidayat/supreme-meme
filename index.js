@@ -1,11 +1,137 @@
 const express = require('express');
 const User = require('./model/user.js')
 const Post = require('./model/post.js')
-var args = process.argv.slice(2);
 const app = express()
-
+const Product = require('./model/product.js')
+const port = 8000;
 app.use(express.json());
 
+
+
+app.post('/users', function(req, res){
+  let {name, email, password, password_confirmation} = req.body;
+
+  if (password !== password_confirmation) return res
+    .status(400)
+    .json({
+      status: false,
+      error: "Password does not match",
+    })
+  
+  else{
+  let user = new User ({
+    name,
+    email,
+    password,
+    password_confirmation,
+  })
+
+  user.save()
+    .then(data => {
+      res.status(201).json({
+        status: true,
+        data: data,
+      })
+    })
+    .catch (err => {
+      res.status(422).json({
+        status: false,
+        error: err,
+      })
+    })
+  }
+})
+
+app.post('/posts', function(req, res){
+  let {title, body} = req.body;
+
+  if (!title || !body) return res
+    .status(400)
+    .json({
+      status: false,
+      error: "There is no title or body",
+    });
+
+  let post = new Post ({
+    title,
+    body,
+  });
+
+  post.save()
+    .then(data => {
+      res.status(201).json({
+        status: true,
+        data: data,
+      });
+    })
+    .catch (err => {
+      res.status(422).json({
+        status: false,
+        error: err,
+      });
+    })
+})
+
+//Create Product
+app.post('/products', function(req, res){
+  let {name, price, stock} = req.body;
+
+  if (!name || !price || !stock) return res
+    .status(400)
+    .json({
+      status: false,
+      error: "Please enter necessary product information!",
+    });
+
+  let product = new Product ({
+    name,
+    price,
+    stock,
+  });
+
+  product.save()
+    .then(data => {
+      res.status(201).json({
+        status: true,
+        data: data,
+      });
+    })
+    .catch (err => {
+      res.status(422).json({
+        status: false,
+        error: err,
+      });
+    })
+})
+
+
+//Find User
+app.get('/users/:id', function(req, res){
+  User.find(req.params.id)
+  .then(data => res.send(data))
+  .catch(err => res.send(err))
+})
+
+//Find All User
+app.get('/users', function(req, res){
+  User.find()
+  .then(data => res.send(data))
+  .catch(err => res.send(err))
+})
+
+//Find Post
+app.get('/posts/:id', function(req, res){
+  Post.find(req.params.id)
+  .then(data => res.send(data))
+  .catch(err => res.send(err))
+})
+
+//Find All Post
+app.get('/posts', function(req, res){
+  Post.find()
+  .then(data => res.send(data))
+  .catch(err => res.send(err))
+})
 
 // Update user Express
 app.put('/users/:id', function (req, res) {
@@ -24,84 +150,29 @@ app.put('/posts/:id', function (req, res) {
     }))
 })
 
+// Update product Express
+app.put('/products/:id', function (req, res) {
+  Product.update(req.params.id, req.body)
+  .then(data => res.send(data))
+  .catch(err => res.send({
+    status: false,
+    error: err
+  }))
+})
 
-  app.listen(3000, () => console.log('Listening to port 3000!'))
+//Delete Post
+app.delete('/posts/:id', function(req, res){
+  Post.remove(req.params.id)
+  .then(data => res.send(data))
+  .catch(err => res.send(err))
+})
+
+//Delete User
+app.delete('/users/:id', function(req, res){
+  User.remove(req.params.id)
+  .then(data => res.send(data))
+  .catch(err => res.send(err))
+})
 
 
-// switch(args[0]) {
-//   case 'create_user':
-//     var currentUser = require('./data/users.json');
-//     var newUser = new User ({
-//       id: currentUser.length + 1,
-//       name: args[1],
-//       email: args[2],
-//       password: args[3],
-//     })
-
-//     newUser.create();
-//     break;
-
-//   case 'read_user':
-//     var id = args[1]
-//     User.find(id)
-//     .then(data => {console.log(data)})
-//     .catch(err => {console.log(err)})
-//     break;
-
-//   case 'read_user':
-//     var id = args[1]
-//     User.find(id)
-//     .then(data => {console.log(data)})
-//     .catch(err => {console.log(err)})
-//     break;
-
-//   case 'read_post':
-//     var id = args[1];
-
-//     console.log(Post.find(id));
-//     break;
-
-//   case 'update_user':
-//     var id = args[1];
-//     var object = {
-//       name: args[2],
-//       email: args[3]
-//     }
-//     User.updateUser(id,object)
-//       .then(data => console.log(data))
-//       .catch(err => console.log(err))
-//     break;
-
-//   case 'update_post':
-//     var id = args[1];
-//     var object = {
-//       title: args[2],
-//       body: args[3]
-//     }
-//     Post.updatePosts(id, object)
-//       .then(data => console.log(data))
-//       .catch(err => console.log(err))
-//     break;
-//   // case 'create_post':
-//   //   var title = args[1];
-//   //   var body = args[2];
-
-//   //   Post.create(title,body);
-//   //   break;
-
-//   case 'delete_user':
-//     var id = args[1];
-
-//     User.Delete(id);
-//     console.log(`User with ID number ${id} has been deleted`);
-//     break;
-
-//     case 'delete_post':
-//     var id = args[1];
-
-//     Post.Delete(id);
-//     console.log(`Post with ID number ${id} has been deleted`);
-//     break;
-//   default:
-//     console.log('Unknown operation!')
-// }
+app.listen(3000, () => console.log('Listening to port 3000!'))
