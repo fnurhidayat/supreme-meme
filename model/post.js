@@ -1,14 +1,14 @@
 const ActiveRecord = require(`./ActiveRecord.js`)
 const fs = require('fs');
 
+
+
 class Post extends ActiveRecord {
+    static table_name = "posts"
     constructor(data) {
         super({
-            table_name: 'posts',
-            data: {
-                title: data.title,
-                body: data.body
-            }
+            title: data.title,
+            body: data.body
         })
     }
     static find(ID) {

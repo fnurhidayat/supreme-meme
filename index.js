@@ -1,31 +1,31 @@
-const User = require('./model/user.js');
-const Post = require('./model/post.js');
 const express = require('express');
+const User = require('./model/user.js')
+const Post = require('./model/post.js')
 var args = process.argv.slice(2);
 const app = express()
 
 app.use(express.json());
 
 
-// Update user
-app.put('/users/:id', function (req,res) {
-  User.updateUser(req.params.id, req.body)
-  .then(data => res.send(data))
-  .catch(err => res.send(err))
+// Update user Express
+app.put('/users/:id', function (req, res) {
+  User.update(req.params.id, req.body)
+    .then(data => res.send(data))
+    .catch(err => res.send(err))
+})
+
+// Update post Express
+app.put('/posts/:id', function (req, res) {
+  Post.update(req.params.id, req.body)
+    .then(data => res.send(data))
+    .catch(err => res.send({
+      status: false,
+      error: err
+    }))
 })
 
 
-// Update post
-app.put('/posts/:id', function (req,res) {
-  User.updatePosts(req.params.id, req.body)
-  .then(data => res.send(data))
-  .catch(err => res.send(err))
-})
-app.listen(3000, () => console.log('Listening to port 3000!'))
-
-
-
-
+  app.listen(3000, () => console.log('Listening to port 3000!'))
 
 
 // switch(args[0]) {
@@ -40,27 +40,27 @@ app.listen(3000, () => console.log('Listening to port 3000!'))
 
 //     newUser.create();
 //     break;
- 
+
 //   case 'read_user':
 //     var id = args[1]
 //     User.find(id)
 //     .then(data => {console.log(data)})
 //     .catch(err => {console.log(err)})
 //     break;
-  
+
 //   case 'read_user':
 //     var id = args[1]
 //     User.find(id)
 //     .then(data => {console.log(data)})
 //     .catch(err => {console.log(err)})
 //     break;
-  
+
 //   case 'read_post':
 //     var id = args[1];
-  
+
 //     console.log(Post.find(id));
 //     break;
-    
+
 //   case 'update_user':
 //     var id = args[1];
 //     var object = {
@@ -71,7 +71,7 @@ app.listen(3000, () => console.log('Listening to port 3000!'))
 //       .then(data => console.log(data))
 //       .catch(err => console.log(err))
 //     break;
-  
+
 //   case 'update_post':
 //     var id = args[1];
 //     var object = {

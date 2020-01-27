@@ -10,35 +10,70 @@ class ActiveRecord {
         currentData.push(this.data);
         fs.writeFileSync(`./data/${this.table_name}.json`, JSON.stringify(currentData, null, 2));
     }
-
-    static updatePosts(id, object) {
-        return new Promise(function (resolve, reject) {
-            let posts = require(`${__dirname}/../data/posts.json`);
-            const index = posts.findIndex(post => post.id == id);
-            if (index < 0) {
-                reject('user not found');
-            }
-            posts[index].title = object.title;
-            posts[index].body = object.body;
-            fs.writeFileSync(`${__dirname}/../data/posts.json`, JSON.stringify(posts, null, 2))
-            resolve(posts, index);
-        })
-
-    }
-
-    static updateUser (id, object){
-        return new Promise(function(resolve, reject){
-            let users = require(`${__dirname}/../data/users.json`);
-            const index = users.findIndex(user => user.id == id);
-        if (index < 0) {
-            reject('user not found');
+    save() {
+        return new Promise((resolve, reject) => {
+            let files;
+            fs.readdir(`${__dirname}/../data/`, (err, data) => {
+              files = data;
+      
+              let filename = this.constructor.table_name + '.json';
+      
+              files = files.filter(i => i == filename);
+              if (files.length == 0) {
+                fs.writeFileSync(`${__dirname}/../data/${filename}`, '[]');
+              }
+      
+              let dataFile = require(`${__dirname}/../data/${filename}`);
+              dataFile.push({
+                id: (dataFile.length + 1),
+                ...this
+              });
+      
+              fs.writeFileSync(`${__dirname}/../data/${filename}`, JSON.stringify(dataFile, null, 2)); 
+            }) 
+          })
         }
-        users[index].name = object.name;
-        users[index].email = object.email;
-        fs.writeFileSync(`${__dirname}/../data/users.json`, JSON.stringify(users, null, 2))
-            resolve(users, index);
+      
+
+    static find(ID) {
+        return new Promise((resolve, reject) => {
+            let temp = require(`../data/${this.table_name}.json`)
+            for (let i = 0; i < temp.length; i++) {
+                if (ID == temp[i].id) {
+                    resolve(temp[i]);
+                }
+            }
+            reject('ID not found');
+        })
+    }
+    static Delete(ID) {
+        return new Promise((resolve, reject) => {
+            let temp = require(`../data/${this.table_name}.json`)
+            for (let i = 0; i < temp.length; i++) {
+                if (ID == temp[i].id) {
+                    temp.splice(i, 1)
+                    resolve(temp);
+                }
+            }
+            reject('ID not found');
         })
     }
 
+    static update(id, updateParams) {
+        return new Promise((resolve, reject) => {
+            let data = require(`${__dirname}/../data/${this.table_name}.json`);
+            const index = data.findIndex(i => i.id == id);
+            if (index < 0) {
+                reject(`${this.table_name} not found`);
+            }
+            data[index] = {
+                ...data[index],
+                ...updateParams
+            };
+            fs.writeFileSync(`${__dirname}/../data/${this.table_name}.json`, JSON.stringify(data, null, 2))
+            resolve(data, index);
+        })
+
+    }
 }
 module.exports = ActiveRecord;
