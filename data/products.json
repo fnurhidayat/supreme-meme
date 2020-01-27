@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "name": "Milk",
-    "price": 20000,
-    "stock": 10
+    "name": "Susu",
+    "price": 20001,
+    "stock": 20
   },
   {
     "id": 2,

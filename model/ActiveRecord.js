@@ -1,13 +1,15 @@
 const fs = require('fs');
 class ActiveRecord {
-    static table_name;
-
     constructor(data) {
-        for (let i in data) {
-            this[i] = data[i];
-        }
+        this.table_name = data.table_name;
+        this.data = data.data;
     }
 
+    create() {
+        var currentData = require(`${__dirname}/./data/${this.table_name}.json`) || [];
+        currentData.push(this.data);
+        fs.writeFileSync(`./data/${this.table_name}.json`, JSON.stringify(currentData, null, 2));
+    }
     save() {
         return new Promise((resolve, reject) => {
             let files;
@@ -80,6 +82,22 @@ class ActiveRecord {
             reject('ID not found');
         })
     }
-}
 
+    static update(id, updateParams) {
+        return new Promise((resolve, reject) => {
+            let data = require(`${__dirname}/../data/${this.table_name}.json`);
+            const index = data.findIndex(i => i.id == id);
+            if (index < 0) {
+                reject(`${this.table_name} not found`);
+            }
+            data[index] = {
+                ...data[index],
+                ...updateParams
+            };
+            fs.writeFileSync(`${__dirname}/../data/${this.table_name}.json`, JSON.stringify(data, null, 2))
+            resolve(data, index);
+        })
+
+    }
+}
 module.exports = ActiveRecord;
