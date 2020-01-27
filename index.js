@@ -1,5 +1,6 @@
 const User = require('./model/user.js')
 const Post = require('./model/post.js')
+const Product = require('./model/product.js')
 
 // switch (args[0]) {
 //   case 'create_user':
@@ -103,6 +104,39 @@ app.post('/posts', function(req, res){
       });
     })
 })
+
+//Create Product
+app.post('/products', function(req, res){
+  let {name, price, stock} = req.body;
+
+  if (!name || !price || !stock) return res
+    .status(400)
+    .json({
+      status: false,
+      error: "Please enter necessary product information!",
+    });
+
+  let product = new Product ({
+    name,
+    price,
+    stock,
+  });
+
+  product.save()
+    .then(data => {
+      res.status(201).json({
+        status: true,
+        data: data,
+      });
+    })
+    .catch (err => {
+      res.status(422).json({
+        status: false,
+        error: err,
+      });
+    })
+})
+
 
 //Find User
 app.get('/users/:id', function(req, res){
