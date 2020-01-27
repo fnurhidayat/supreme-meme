@@ -1,10 +1,6 @@
 [
   {
     "id": 1,
-<<<<<<< HEAD
-    "title": "hihi4",
-    "body": "haha1"
-=======
     "title": "World",
     "body": "Hello"
   },
@@ -32,6 +28,5 @@
     "id": 6,
     "title": "Judul",
     "body": "Isi"
->>>>>>> edd9c4c45b52604a83063c03eb0692e6619df7e1
   }
 ]
